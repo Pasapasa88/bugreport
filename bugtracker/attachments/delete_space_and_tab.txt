@@ -1,0 +1,34 @@
+CREATE OR REPLACE FUNCTION public.delete_space_and_tab(
+	text)
+    RETURNS text
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+declare
+    text_line text;
+ m   varchar;
+ res text array;
+ ret_txt text;
+BEGIN
+   text_line=replace(replace(replace(replace($1,
+        ' ', ' '),
+        E'
+', ' '),
+        E'	', ' '),
+        E'
+', ' ');
+   if LENGTH(text_line) > 0 then
+	   FOREACH m IN ARRAY string_to_array(text_line,' ')
+	   loop
+		 if trim(m)!='' then
+		  res=array_append(res,m);
+		 end if;
+		 end loop;
+	else
+	res=text_line;
+	end if;
+ret_txt:=array_to_string(res,' ');
+return ret_txt;
+END;
+$BODY$;

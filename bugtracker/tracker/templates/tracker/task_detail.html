@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html>
+<head>
+    <title>Task Detail</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'tracker/styles.css' %}">
+    <style>
+        .task-detail {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .comment {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .comment p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="task-detail">
+        <h1>{{ task.subject }}</h1>
+        <p><strong>Status:</strong> {{ task.status }}</p>
+        <p><strong>Description:</strong> {{ task.description }}</p>
+        <p><strong>Created At:</strong> {{ task.created_at }}</p>
+    </div>
+
+    <div class="task-detail">
+        <h2>Comments</h2>
+        <ul>
+            {% for comment in comments %}
+            <li class="comment">
+                <p><strong>Author:</strong> {{ comment.author }}</p>
+                <p><strong>Date:</strong> {{ comment.created_at }}</p>
+                <p>{{ comment.body }}</p>
+                {% if comment.attachment %}
+                    <p><a href="{{ comment.attachment.url }}">Download Attachment</a></p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="{% url 'task_list' %}">Back to Task List</a>
+</body>
+</html>

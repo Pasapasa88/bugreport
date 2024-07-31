@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <title>Task List</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'tracker/styles.css' %}">
+</head>
+<body>
+    <h1>Заявки ОНФО</h1>
+
+    <form method="GET" action="" class="search-form">
+        <input type="text" name="q" placeholder="Поиск заявки по ID" value="{{ request.GET.q }}">
+        <button type="submit">Поиск</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Дата создания</th>
+                <th>Номер заявки</th>
+                <th>Статус</th>
+                <th>Дата последнего комментария</th>
+                <th>Аннотация заявки</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.created_at }}</td>
+                <td><a href="{% url 'task_detail' task.id %}">{{ task.id }}</a></td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.last_comment_date }}</td>
+                <td>{{ task.last_comment_annotation }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        {% if tasks.has_previous %}
+            <a href="?page={{ tasks.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% if tasks.has_next %}
+            <a href="?page={{ tasks.next_page_number }}">Next</a>
+        {% endif %}
+    </div>
+</body>
+</html>
