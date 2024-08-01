@@ -7,21 +7,41 @@
     <link rel="stylesheet" type="text/css" href="{% static 'tracker/styles.css' %}">
 </head>
 <body>
-    <h1>Заявки ОНФО</h1>
+    <h1>Task List</h1>
 
     <form method="GET" action="" class="search-form">
-        <input type="text" name="q" placeholder="Поиск заявки по ID" value="{{ request.GET.q }}">
-        <button type="submit">Поиск</button>
+        <input type="text" name="q" placeholder="Search by Task ID" value="{{ request.GET.q }}">
+        <button type="submit">Search</button>
     </form>
 
     <table>
         <thead>
             <tr>
-                <th>Дата создания</th>
-                <th>Номер заявки</th>
-                <th>Статус</th>
-                <th>Дата последнего комментария</th>
-                <th>Аннотация заявки</th>
+                <th>
+                    <a href="?sort_by=created_at&sort_order={% if sort_by == 'created_at' and sort_order == 'asc' %}desc{% else %}asc{% endif %}">
+                        Дата создания
+                    </a>
+                </th>
+                <th>
+                    <a href="?sort_by=id&sort_order={% if sort_by == 'id' and sort_order == 'asc' %}desc{% else %}asc{% endif %}">
+                        Номер заявки
+                    </a>
+                </th>
+                <th>
+                    <a href="?sort_by=status&sort_order={% if sort_by == 'status' and sort_order == 'asc' %}desc{% else %}asc{% endif %}">
+                        Статус
+                    </a>
+                </th>
+                <th>
+                    <a href="?sort_by=last_comment_date&sort_order={% if sort_by == 'last_comment_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}">
+                        Дата последнего комментария
+                    </a>
+                </th>
+                <th>
+                    <a href="?sort_by=subject&sort_order={% if sort_by == 'subject' and sort_order == 'asc' %}desc{% else %}asc{% endif %}">
+                        Аннотация заявки
+                    </a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +51,7 @@
                 <td><a href="{% url 'task_detail' task.id %}">{{ task.id }}</a></td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.last_comment_date }}</td>
-                <td>{{ task.last_comment_annotation }}</td>
+                <td>{{ task.subject }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -39,11 +59,11 @@
 
     <div>
         {% if tasks.has_previous %}
-            <a href="?page={{ tasks.previous_page_number }}">Previous</a>
+            <a href="?page={{ tasks.previous_page_number }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}">Previous</a>
         {% endif %}
 
         {% if tasks.has_next %}
-            <a href="?page={{ tasks.next_page_number }}">Next</a>
+            <a href="?page={{ tasks.next_page_number }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}">Next</a>
         {% endif %}
     </div>
 </body>
