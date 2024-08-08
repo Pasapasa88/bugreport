@@ -27,25 +27,26 @@
 </head>
 <body>
     <div class="task-detail">
-        <h1>{{ task.subject }}</h1>
-        <p><strong>Status:</strong> {{ task.status }}</p>
-        <p><strong>Description:</strong> {{ task.description }}</p>
-        <p><strong>Created At:</strong> {{ task.created_at }}</p>
+        <h1><strong>Номер заявки: </strong>{{ task.subject }}</h1>
+        <p><strong>Статус заявки:</strong> {{ task.status }}</p>
+         <p>  <strong>Аннотация:</strong> {{ task.annotation }}</p>
+        <p><strong>Краткое описание:</strong> {{ task.description }}</p>
+        <p><strong>Дата создания:</strong> {{ task.created_at }}</p>
     </div>
 
     <div class="task-detail">
-    <h2>Comments</h2>
+    <h2>Комментарии по заявке</h2>
     <ul>
         {% for comment in comments %}
             <li class="comment">
-                <p><strong>Author:</strong> {{ comment.author }}</p>
-                <p><strong>Date:</strong> {{ comment.created_at }}</p>
-                <p>{{ comment.body }}</p>
+                <p><strong>Автор:</strong> {{ comment.author }}</p>
+                <p><strong>Дата комментария:</strong> {{ comment.created_at }}</p>
+                <p><strong>Комментарий:</strong>{{ comment.body }}</p>
                 {% if comment.attachments %}
-                    <p>Attachments:</p>
+                    <p>Вложения:</p>
                     <ul>
                         {% for attachment in comment.attachments.all %}
-                            <li><a href="{{ attachment.file.url }}">Download Attachment</a></li>
+                            <li><a href="{{ attachment.file.url }}">Скачать вложение</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -54,6 +55,6 @@
     </ul>
     </div>
 
-    <a href="{% url 'task_list' %}">Back to Task List</a>
+    <a href="{% url 'task_list' %}">Вернуться к списку заявок</a>
 </body>
 </html>
