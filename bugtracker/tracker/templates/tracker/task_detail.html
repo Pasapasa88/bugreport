@@ -34,19 +34,24 @@
     </div>
 
     <div class="task-detail">
-        <h2>Comments</h2>
-        <ul>
-            {% for comment in comments %}
+    <h2>Comments</h2>
+    <ul>
+        {% for comment in comments %}
             <li class="comment">
                 <p><strong>Author:</strong> {{ comment.author }}</p>
                 <p><strong>Date:</strong> {{ comment.created_at }}</p>
                 <p>{{ comment.body }}</p>
-                {% if comment.attachment %}
-                    <p><a href="{{ comment.attachment.url }}">Download Attachment</a></p>
+                {% if comment.attachments %}
+                    <p>Attachments:</p>
+                    <ul>
+                        {% for attachment in comment.attachments.all %}
+                            <li><a href="{{ attachment.file.url }}">Download Attachment</a></li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </li>
-            {% endfor %}
-        </ul>
+        {% endfor %}
+    </ul>
     </div>
 
     <a href="{% url 'task_list' %}">Back to Task List</a>

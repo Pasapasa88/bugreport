@@ -1,6 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Task
 from django.core.paginator import Paginator
+from django.http import FileResponse,Http404
+from django.conf import settings
+import os
+
 
 
 def task_list(request):
@@ -12,7 +16,7 @@ def task_list(request):
     tasks = Task.objects.all()
 
     if query:
-        tasks = tasks.filter(id=query)
+        tasks = tasks.filter(subject=query)
 
     tasks = tasks.order_by(f'{order_prefix}{sort_by}')
 
@@ -27,6 +31,15 @@ def task_list(request):
     })
 
 def task_detail(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
+    task = get_object_or_404(Task, subject=task_id)
     comments = task.comments.order_by('-created_at')  # Комментарии в порядке убывания
     return render(request, 'tracker/task_detail.html', {'task': task, 'comments': comments})
+
+
+def download_file(request, filename):
+    file_path = os.path.join(rf'{settings.BASE_DIR}\tracker\attachments', filename)
+    if os.path.exists(file_path):
+        response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=filename)
+        return response
+    else:
+        return Http404("File not found")

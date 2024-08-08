@@ -48,10 +48,10 @@
             {% for task in tasks %}
             <tr>
                 <td>{{ task.created_at }}</td>
-                <td><a href="{% url 'task_detail' task.id %}">{{ task.id }}</a></td>
+                <td><a href="{% url 'task_detail' task.subject %}">{{ task.subject }}</a></td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.last_comment_date }}</td>
-                <td>{{ task.subject }}</td>
+                <td>{{ task.annotation }}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -25,8 +25,12 @@ class Comment(models.Model):
     task = models.ForeignKey(Task, related_name='comments', on_delete=models.CASCADE)
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    attachment = models.FileField(upload_to='attachments/', null=True, blank=True)
+    #attachment = models.FileField(upload_to='tracker/attachments/', null=True, blank=True)
     author = models.CharField(max_length=100, default='Anonymous')
 
     def __str__(self):
         return f'Comment on {self.task.subject}'
+
+class Attachment(models.Model):
+    comment = models.ForeignKey(Comment, related_name='attachments', on_delete=models.CASCADE)
+    file = models.FileField(upload_to=f'tracker/attachments')
