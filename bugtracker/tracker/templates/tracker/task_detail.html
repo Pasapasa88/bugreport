@@ -42,7 +42,7 @@
                 <p><strong>Автор:</strong> {{ comment.author }}</p>
                 <p><strong>Дата комментария:</strong> {{ comment.created_at }}</p>
                 <p><strong>Комментарий:</strong>{{ comment.body }}</p>
-                {% if comment.attachments %}
+                {% if comment.attachments.all %}
                     <p>Вложения:</p>
                     <ul>
                         {% for attachment in comment.attachments.all %}
