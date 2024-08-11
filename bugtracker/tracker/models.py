@@ -34,3 +34,13 @@ class Comment(models.Model):
 class Attachment(models.Model):
     comment = models.ForeignKey(Comment, related_name='attachments', on_delete=models.CASCADE)
     file = models.FileField(upload_to=f'tracker/attachments')
+    file_name = models.CharField(blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.file:
+            # Получаем имя файла из path файла
+            self.file_name = self.file.name.split('/')[-1]
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.file_name

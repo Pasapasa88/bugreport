@@ -46,10 +46,11 @@
                     <p>Вложения:</p>
                     <ul>
                         {% for attachment in comment.attachments.all %}
-                            <li><a href="{{ attachment.file.url }}">Скачать вложение</a></li>
+                            <li><a class="attachment-link" href="{{ attachment.file.url }}">Скачать {{ attachment.file_name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
+
             </li>
         {% endfor %}
     </ul>
